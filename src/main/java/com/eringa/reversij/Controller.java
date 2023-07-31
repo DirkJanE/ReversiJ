@@ -2,7 +2,6 @@ package com.eringa.reversij;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.HPos;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
@@ -12,6 +11,7 @@ import javafx.scene.text.Text;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import static com.eringa.reversij.GameLogic.checkHorizontalLine;
 import static javafx.scene.shape.StrokeType.INSIDE;
 
 public class Controller implements Initializable {
@@ -64,6 +64,7 @@ public class Controller implements Initializable {
     public void handleMouseClick(MouseEvent e) {
         System.out.println("Circle clicked!");
         sourcecircle = (Circle) e.getSource();
-        System.out.println(sourcecircle.getId());
+        String circleid = sourcecircle.getId();
+        checkHorizontalLine(circleid, circles);
     }
 }
