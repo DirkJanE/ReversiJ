@@ -11,7 +11,7 @@ import javafx.scene.text.Text;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import static com.eringa.reversij.GameLogic.checkHorizontalLine;
+import static com.eringa.reversij.GameLogic.checkLine;
 import static javafx.scene.shape.StrokeType.INSIDE;
 
 public class Controller implements Initializable {
@@ -23,6 +23,8 @@ public class Controller implements Initializable {
     private String score;
 
     Circle[] circles = new Circle[64];
+
+    Boolean validline;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -65,6 +67,6 @@ public class Controller implements Initializable {
         System.out.println("Circle clicked!");
         sourcecircle = (Circle) e.getSource();
         String circleid = sourcecircle.getId();
-        checkHorizontalLine(circleid, circles);
+        System.out.println(checkLine(circleid, circles));
     }
 }

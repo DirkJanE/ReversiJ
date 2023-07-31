@@ -2,11 +2,9 @@ package com.eringa.reversij;
 
 import javafx.scene.shape.Circle;
 
-
-
 public class GameLogic {
 
-    public static Integer checkHorizontalLine(String circleid, Circle[] circles) {
+    public static Boolean checkLine(String circleid, Circle[] circles) {
         //System.out.print(circleid);
 
         Integer id;
@@ -17,11 +15,17 @@ public class GameLogic {
         else {
             id = Integer.valueOf(circleid.substring(6, 7));
         }
-        System.out.println(circles[id]);
 
-        //if (circles[id - 1].getFill() == "LIGHTBLUE")
+        String hexcolor = "0xadd8e6ff";
 
-        return 0;
+        for (int count = 1; count < 4; count++) {
+            if (circles[id - count].getFill().toString().equals(hexcolor)) {
+
+            } else {
+                return false;
+            }
+        }
+        return true;
     }
 
 }
