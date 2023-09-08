@@ -2,11 +2,13 @@ package com.eringa.reversij;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -21,29 +23,35 @@ public class Controller implements Initializable {
     @FXML public Text text1, text2, playerturn;
     @FXML public Circle sourcecircle;
 
-    private String score;
+    @FXML public Button button;
 
-    String hexcolorred = "0xff0000ff";
-    String hexcolorblack = "0x000000ff";
-
-    Circle[] circles = new Circle[208];
     ArrayList<Integer> changeids = new ArrayList<>();
 
-    Boolean player1move = true;
-    String playercolor;
-    String opponentcolor;
+    Board board = new Board("0xadd8e6ff", "0xff0000ff", "0x000000ff");
+
+    Circle[] circles = new Circle[208];
+
+    Player player1 = new Player(false, board.getHexcolorblack());
+    Player player2 = new Player(false, board.getHexcolorblack());
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
+        coinFlip(player1, player2, board, playerturn);
+        setupBoard();
+        updateScore(circles, text1, text2, board.getHexcolorred(), board.getHexcolorblack());
+        button.setOnMouseClicked(e -> handleResetButtonClick());
+        }
+
+    public void setupBoard() {
         for (int count = 0; count < 208; count++) {
             Circle circle = new Circle();
-            circle.setId("circle" + count);
+            circle.setId(String.valueOf(count));
             circle.setFill(Color.LIGHTBLUE);
             circle.setStroke(Color.BLACK);
             circle.setStrokeType(INSIDE);
             circle.setRadius(23);
-            circle.setOnMouseClicked(e -> handleMouseClick(e));
+            circle.setOnMouseClicked(e -> handleBoardClick(e));
 
             if (count == 100 || count == 107) {
                 circle.setFill(Color.RED);
@@ -60,47 +68,39 @@ public class Controller implements Initializable {
                 cell++;
             }
         }
-
-    playerturn.setText("It's your turn, player 1!");
-    updateScore(circles, text1, text2, hexcolorred, hexcolorblack);
-
+        updateScore(circles, text1, text2, board.hexcolorred, board.getHexcolorblack());
     }
 
-    public void handleMouseClick(MouseEvent e) {
+    public void handleBoardClick(MouseEvent e) {
 
         sourcecircle = (Circle) e.getSource();
         String circleid = sourcecircle.getId();
 
-        if (player1move == true) {
+        if (player1.getPlayermove() == true) {
 
-            playercolor = hexcolorred;
-            opponentcolor = hexcolorblack;
-            checkLine(circleid, circles, changeids, playercolor, opponentcolor);
+            checkLines(circleid, circles, changeids, player1.getPlayercolor(), player2.getPlayercolor(), board);
             if (changeids.size() > 0) {
-                updateBoard(circles, changeids, playercolor);
+                updateBoard(circles, changeids, player1.getPlayercolor());
                 playerturn.setText("It's your turn, player 2!");
-                player1move = false;
+                player1.setPlayermove(false);
             }
 
         } else {
 
-            playercolor = hexcolorblack;
-            opponentcolor = hexcolorred;
-            checkLine(circleid, circles, changeids, playercolor, opponentcolor);
+            checkLines(circleid, circles, changeids, player2.getPlayercolor(), player1.getPlayercolor(), board);
             if (changeids.size() > 0) {
-                updateBoard(circles, changeids, playercolor);
+                updateBoard(circles, changeids, player2.getPlayercolor());
                 playerturn.setText("It's your turn, player 1!");
-                player1move = true;
+                player1.setPlayermove(true);
             }
         }
 
-        /*
-        for (int i = 0; i < changeids.size(); i++) {
-            System.out.println(changeids.get(i));
-        }
-        */
         changeids.clear();
 
-        updateScore(circles, text1, text2, hexcolorred, hexcolorblack);
+        updateScore(circles, text1, text2, board.hexcolorred, board.getHexcolorblack());
+    }
+
+    public void handleResetButtonClick() {
+        setupBoard();
     }
 }
