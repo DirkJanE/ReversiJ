@@ -27,7 +27,6 @@ public class Main extends Application {
         stage.setScene(scene);
         stage.show();
 
-
         /*
         DialogPane dialog = new DialogPane();
         dialog.isVisible();
@@ -35,8 +34,8 @@ public class Main extends Application {
         TextField input = new TextField();
         label.setStyle(" -fx-background-color: lightgreen;");
         dialog.setContent(label);
+        */
 
-         */
     }
 
     public static void main(String[] args) {
