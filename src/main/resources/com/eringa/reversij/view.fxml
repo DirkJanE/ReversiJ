@@ -61,17 +61,20 @@
             </GridPane>
          </center>
          <left>
-            <VBox alignment="CENTER" prefHeight="900.0" prefWidth="140.0" BorderPane.alignment="CENTER">
+            <VBox alignment="CENTER" prefHeight="900.0" BorderPane.alignment="CENTER">
                <children>
-                  <Label contentDisplay="CENTER" text="Player 1 Score:">
+                  <Label fx:id="player1name" contentDisplay="RIGHT" prefHeight="20.0" prefWidth="115.0" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>
+                     <VBox.margin>
+                        <Insets left="10.0" />
+                     </VBox.margin>
                   </Label>
-                  <Text fx:id="text1" strokeType="OUTSIDE" strokeWidth="0.0" text="0">
+                  <Text fx:id="score1" strokeType="OUTSIDE" strokeWidth="0.0" text="0">
                      <font>
                         <Font size="36.0" />
                      </font>
@@ -82,21 +85,24 @@
          <right>
             <VBox alignment="CENTER" prefHeight="900.0" BorderPane.alignment="CENTER">
                <children>
-                  <Label alignment="CENTER" prefHeight="20.0" prefWidth="115.0" text="Player 2 Score:">
+                  <Label fx:id="player2name" alignment="CENTER" prefHeight="20.0" prefWidth="115.0" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>
                   </Label>
-                  <Text fx:id="text2" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="99.13671875">
+                  <Text fx:id="score2" strokeType="OUTSIDE" strokeWidth="0.0" text="0" textAlignment="CENTER" wrappingWidth="99.13671875">
                      <font>
                         <Font size="36.0" />
                      </font>
                   </Text>
                </children>
+               <BorderPane.margin>
+                  <Insets />
+               </BorderPane.margin>
             </VBox>
          </right>
          <bottom>
-            <VBox alignment="CENTER" prefWidth="900.0" BorderPane.alignment="CENTER">
+            <VBox alignment="CENTER" BorderPane.alignment="CENTER">
                <children>
                   <Text fx:id="playerturn" strokeType="OUTSIDE" strokeWidth="0.0" text="It's you turn, player 1!" textAlignment="CENTER" wrappingWidth="245.13671875">
                      <font>
@@ -106,34 +112,34 @@
                         <Insets bottom="50.0" />
                      </VBox.margin>
                   </Text>
-                  <Button fx:id="button" mnemonicParsing="false" text="Reset Game!" textAlignment="CENTER">
+                  <Button fx:id="resetbutton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" style="-fx-background-color: grey; -fx-background-radius: 0.5em; -fx-border-radius: 0.5em;" text="Reset Game!" textAlignment="CENTER">
                      <VBox.margin>
-                        <Insets bottom="20.0" />
+                        <Insets />
                      </VBox.margin></Button>
                </children>
+               <BorderPane.margin>
+                  <Insets bottom="20.0" />
+               </BorderPane.margin>
             </VBox>
          </bottom>
       </BorderPane>
-      <DialogPane layoutX="300.0" layoutY="350.0" prefHeight="166.0" prefWidth="360.0" style="-fx-background-color: #eeccb4; -fx-background-radius: 1em;" visible="true">
+      <DialogPane fx:id="dialog" layoutX="275.0" layoutY="330.0" prefHeight="180.0" prefWidth="360.0" style="-fx-background-color: #eeccb4; -fx-background-radius: 1em;">
          <content>
-            <VBox prefHeight="200.0" prefWidth="100.0">
+            <VBox alignment="CENTER" minHeight="180.0" prefHeight="100.0" prefWidth="100.0">
                <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Please, enter your name, player 1:" textAlignment="CENTER" wrappingWidth="337.93951416015625">
+                  <Text fx:id="request" strokeType="OUTSIDE" strokeWidth="0.0" text="Please, enter your name, player 1:" textAlignment="CENTER" wrappingWidth="337.93951416015625">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </Text>
-                  <TextField scaleX="0.8" style="-fx-background-color: lightgrey; -fx-background-radius: 1em; -fx-border-radius: 1em;">
+                  <TextField fx:id="playername" alignment="CENTER" scaleX="0.8" style="-fx-background-color: lightgrey; -fx-border-radius: 1em; -fx-background-radius: 1em;">
                      <VBox.margin>
-                        <Insets top="20.0" />
+                        <Insets top="30.0" />
                      </VBox.margin>
                   </TextField>
-                  <Button alignment="BOTTOM_CENTER" mnemonicParsing="false" prefHeight="30.0" prefWidth="122.0" style="-fx-background-radius: 1em; -fx-background-color: lightgrey;" text="OK" textAlignment="CENTER">
-                     <font>
-                        <Font size="36.0" />
-                     </font>
+                  <Button fx:id="dialogbutton" alignment="BOTTOM_CENTER" mnemonicParsing="false" style="-fx-background-color: grey; -fx-background-radius: 0.5em;" text="Ok">
                      <VBox.margin>
-                        <Insets left="100.0" top="20.0" />
+                        <Insets top="30.0" />
                      </VBox.margin>
                   </Button>
                </children>

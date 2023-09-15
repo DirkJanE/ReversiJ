@@ -2,14 +2,17 @@ package com.eringa.reversij;
 
 public class Player {
 
-    Boolean playermove;
-    String playercolor;
-    String playername;
+    private Boolean playermove;
+    private String playercolor;
+    private String playername;
 
-    public Player(Boolean playermove, String playercolor) {
+    private Integer playerscore;
+
+    public Player(Boolean playermove, String playercolor, String playername, Integer playerscore) {
         this.playermove = playermove;
         this.playercolor = playercolor;
-        //this.playername = playername;
+        this.playername = playername;
+        this.playerscore = playerscore;
     }
 
     public Boolean getPlayermove() {
@@ -34,5 +37,13 @@ public class Player {
 
     public void setPlayername(String playername) {
         this.playername = playername;
+    }
+
+    public Integer getPlayerscore() {
+        return playerscore;
+    }
+
+    public void setPlayerscore(Integer playerscore) {
+        this.playerscore = playerscore;
     }
 }
