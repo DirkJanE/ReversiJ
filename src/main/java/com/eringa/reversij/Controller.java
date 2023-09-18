@@ -35,22 +35,22 @@ public class Controller implements Initializable {
 
     Circle[] circles = new Circle[208];
 
-    Player player1 = new Player(false, board.getHexcolorblack(), "Player 1", 0);
-    Player player2 = new Player(false, board.getHexcolorblack(), "Player 2", 0);
+    Player player1 = new Player(false, board.getHexcolorblack(), "Player 1", 0, "");
+    Player player2 = new Player(false, board.getHexcolorblack(), "Player 2", 0, "");
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
         getNames(dialog, request, playername, player1name, player2name, dialogbutton, player1, player2, playerturn);
 
-        coinFlip(player1, player2, board, playerturn);
+        coinFlip(player1, player2, board);
 
-        setupBoard();
+        setupBoard(player1name, player2name);
 
         updateScore(circles, score1, score2, board, player1, player2);
 
         resetbutton.setOnMouseClicked(e -> handleResetButtonClick());
-
+        resetbutton.setText("Start");
         }
 
     public void handleBoardClick(MouseEvent e) {
@@ -59,22 +59,29 @@ public class Controller implements Initializable {
 
         checkLines(sourcecircle, circles, player1, player2, board);
 
-        updateBoard(circles, board, player1, player2);
+        if (board.getChangeids().size() > 0) {
+            updateBoard(circles, board, player1, player2);
 
-        setPlayerTurn(player1, player2, playerturn);
+            setPlayerTurn(player1, player2, playerturn);
 
-        updateScore(circles, score1, score2, board, player1, player2);
+            updateScore(circles, score1, score2, board, player1, player2);
+        }
     }
 
     public void handleResetButtonClick() {
-        setupBoard();
+        if (resetbutton.getText().equals("Start")) {
+            setupBoard(player1name, player2name);
+
+        } else {
+            setPlayerTurn(player1, player2, playerturn);
+        }
     }
 
-    public void setupBoard() {
+    public void setupBoard(Label player1name, Label player2name) {
 
         for (int count = 0; count < 208; count++) {
             Circle circle = new Circle();
-            circle.setOnMouseClicked(e -> handleBoardClick(e));
+            circle.setOnMouseClicked(this::handleBoardClick);
             circle.setId(String.valueOf(count));
             circle.setFill(Color.LIGHTBLUE);
             circle.setStroke(Color.BLACK);
@@ -97,5 +104,13 @@ public class Controller implements Initializable {
                 cell++;
             }
         }
+        if (player1.getPlayermove()) {
+            player1name.setText(player1.getPlayername());
+            player2name.setText(player2.getPlayername());
+        } else {
+            player2name.setText(player1.getPlayername());
+            player1name.setText(player2.getPlayername());
+        }
+        updateScore(circles, score1, score2, board, player1, player2);
     }
 }

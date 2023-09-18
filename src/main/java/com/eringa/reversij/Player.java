@@ -5,14 +5,16 @@ public class Player {
     private Boolean playermove;
     private String playercolor;
     private String playername;
-
     private Integer playerscore;
 
-    public Player(Boolean playermove, String playercolor, String playername, Integer playerscore) {
+    private String playerposition;
+
+    public Player(Boolean playermove, String playercolor, String playername, Integer playerscore, String playerposition) {
         this.playermove = playermove;
         this.playercolor = playercolor;
         this.playername = playername;
         this.playerscore = playerscore;
+        this.playerposition = playerposition;
     }
 
     public Boolean getPlayermove() {
@@ -45,5 +47,13 @@ public class Player {
 
     public void setPlayerscore(Integer playerscore) {
         this.playerscore = playerscore;
+    }
+
+    public String getPlayerposition() {
+        return playerposition;
+    }
+
+    public void setPlayerposition(String playerposition) {
+        this.playerposition = playerposition;
     }
 }

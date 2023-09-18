@@ -18,47 +18,44 @@ public class GameLogic {
         request.setText("Please enter your name, player 1:");
         player1name.setText("Score " + player1.getPlayername() + ":");
         player2name.setText("Score " + player2.getPlayername() + ":");
-        dialogbutton.setOnMouseClicked(e -> handleDialogClick(playername, player1, player2, player1name, player2name, request, dialog, playerturn));
+        dialogbutton.setOnMouseClicked(e -> handleDialogClick(playername, player1, player2, request, dialog));
     }
 
-    public static void handleDialogClick(TextField playername, Player player1, Player player2, Label player1name, Label player2name, Text request, DialogPane dialog, Text playerturn) {
+    public static void handleDialogClick(TextField playername, Player player1, Player player2, Text request, DialogPane dialog) {
         if (playername.getCharacters().toString().length() > 0) {
-            if (player1.getPlayername() == "Player 1") {
+            if (player1.getPlayername().equals("Player 1")) {
                 player1.setPlayername(playername.getCharacters().toString());
-                player1name.setText("Score " + player1.getPlayername() + ":");
                 playername.setText("");
                 request.setText("Please enter your name, player 2:");
-            } else if (player2.getPlayername() == "Player 2") {
+            } else if (player2.getPlayername().equals("Player 2")) {
                 player2.setPlayername(playername.getCharacters().toString());
-                player2name.setText("Score " + player2.getPlayername() + ":");
                 playername.setText("");
                 dialog.setVisible(false);
             }
         }
-        setPlayerTurn(player1, player2, playerturn);
     }
 
     public static void setPlayerTurn(Player player1, Player player2, Text playerturn) {
-        if (player1.getPlayermove()) {
-            playerturn.setText("It's your turn, " + player1.getPlayername() + "!");
-            player1.setPlayermove(false);
-        } else {
-            playerturn.setText("It's your turn, " + player2.getPlayername() + "!");
-            player1.setPlayermove(true);
+            if (player1.getPlayermove()) {
+                playerturn.setText("It's your turn, " + player1.getPlayername() + "!");
+                player1.setPlayermove(false);
+            } else {
+                playerturn.setText("It's your turn, " + player2.getPlayername() + "!");
+                player1.setPlayermove(true);
+            }
         }
-    }
 
-    public static void coinFlip(Player player1, Player player2, Board board, Text playerturn) {
+    public static void coinFlip(Player player1, Player player2, Board board) {
 
         int num = (int)(Math.random() * 2) + 1;
         if (num == 1) {
             player1.setPlayermove(true);
             player1.setPlayercolor(board.getHexcolorred());
-            //playerturn.setText("It's your turn, " + player1.getPlayername() + "!");
+            player1.setPlayerposition("left");
         } else {
             player2.setPlayermove(true);
             player2.setPlayercolor(board.getHexcolorred());
-            //playerturn.setText("It's your turn, " + player2.getPlayername() + "!");
+            player2.setPlayerposition("left");
         }
     }
 
@@ -84,17 +81,17 @@ public class GameLogic {
         List<Object> limitandoffsets = new ArrayList<>();
         List<Integer> offsets;
 
-        Integer offset;
+        int offset;
         String limit;
-        Integer direction;
-        Boolean border = false;
+        int direction;
+        boolean border = false;
 
         limitandoffsets = getOffsets(id, board, limitandoffsets);
 
         limit = (String) limitandoffsets.get(0);
         offsets = (List<Integer>) limitandoffsets.get(1);
 
-        for (int i = 0; i < offsets.size(); i++) {
+        for (Integer integer : offsets) {
 
             if (board.getBoardlimits().contains(id)) {
                 border = true;
@@ -105,33 +102,32 @@ public class GameLogic {
 
                 for (int j = 1; j < 8; j++) {
 
-                    offset = id + (offsets.get(i) * j);
-                    direction = offsets.get(i);
-
-                    Integer finalOffset = offset;
+                    offset = id + (integer * j);
+                    direction = integer;
 
                     if (j == 1) {
                         if (circles[offset].getFill().toString().equals(opponentcolor)) {
-                            if (!board.getBoardlimits().contains(id)) {
+
+                            if (!board.getBoardlimits().contains(offset)) {
                                 tempids.add(offset);
                                 border = false;
                             } else {
-                                if (board.getBoardlimits().contains(id) && border) {
-                                    if (limit == "topleft" && (direction == 1 || direction == 8)) {
+                                if (board.getBoardlimits().contains(offset) && border) {
+                                    if (limit.equals("topleft") && (direction == 1 || direction == 8)) {
                                         tempids.add(offset);
-                                    } else if (limit == "topright" && (direction == -1 || direction == 8)) {
+                                    } else if (limit.equals("topright") && (direction == -1 || direction == 8)) {
                                         tempids.add(offset);
-                                    } else if (limit == "bottomleft" && (direction == 1 || direction == -8)) {
+                                    } else if (limit.equals("bottomleft") && (direction == 1 || direction == -8)) {
                                         tempids.add(offset);
-                                    } else if (limit == "bottomright" && (direction == -1 || direction == -8)) {
+                                    } else if (limit.equals("bottomright") && (direction == -1 || direction == -8)) {
                                         tempids.add(offset);
-                                    } else if (limit == "top" && offset > 72 && offset < 79) {
+                                    } else if (limit.equals("top") && offset > 72 && offset < 79) {
                                         tempids.add(offset);
-                                    } else if (limit == "left" && offset == 80 || offset == 88 || offset == 96 || offset == 104 || offset == 112 || offset == 120) {
+                                    } else if (limit.equals("left") && offset == 80 || offset == 88 || offset == 96 || offset == 104 || offset == 112 || offset == 120) {
                                         tempids.add(offset);
-                                    } else if (limit == "right" && offset == 87 || offset == 95 || offset == 103 || offset == 111 || offset == 119 || offset == 127) {
+                                    } else if (limit.equals("right") && offset == 87 || offset == 95 || offset == 103 || offset == 111 || offset == 119 || offset == 127) {
                                         tempids.add(offset);
-                                    } else if (limit == "bottom" && offset > 128 && offset < 135) {
+                                    } else if (limit.equals("bottom") && offset > 128 && offset < 135) {
                                         tempids.add(offset);
                                     } else {
                                         border = false;
@@ -146,11 +142,11 @@ public class GameLogic {
                             break;
                         }
 
-                    } else if (j > 1) {
+                    } else {
 
                         if (circles[offset].getFill().toString().equals(opponentcolor)) {
                             if (!border) {
-                                if (board.getBoardlimits().contains(id)) {
+                                if (board.getBoardlimits().contains(offset)) {
                                     border = false;
                                     tempids.clear();
                                     break;
@@ -158,15 +154,15 @@ public class GameLogic {
                                     tempids.add(offset);
                                 }
                             } else {
-                                if (limit == "topleft" && (direction == 1 || direction == 8)) {
+                                if (limit.equals("topleft") && (direction == 1 || direction == 8)) {
                                     tempids.add(offset);
-                                } else if (limit == "topright" && (direction == -1 || direction == 8)) {
+                                } else if (limit.equals("topright") && (direction == -1 || direction == 8)) {
                                     tempids.add(offset);
-                                } else if (limit == "bottomleft" && (direction == -8 || direction == 1)) {
+                                } else if (limit.equals("bottomleft") && (direction == -8 || direction == 1)) {
                                     tempids.add(offset);
-                                } else if (limit == "bottomright" && (direction == -8 || direction == -1)) {
+                                } else if (limit.equals("bottomright") && (direction == -8 || direction == -1)) {
                                     tempids.add(offset);
-                                } else if (limit == "top" && (direction == -1 || direction == 1)) {
+                                } else if (limit.equals("top") && (direction == -1 || direction == 1)) {
                                     if (offset != 72 && offset != 79) {
                                         tempids.add(offset);
                                     } else {
@@ -174,7 +170,7 @@ public class GameLogic {
                                         tempids.clear();
                                         break;
                                     }
-                                } else if (limit == "left" && (direction == -8 || direction == 8)) {
+                                } else if (limit.equals("left") && (direction == -8 || direction == 8)) {
                                     if (offset != 72 && offset != 128) {
                                         tempids.add(offset);
                                     } else {
@@ -182,7 +178,7 @@ public class GameLogic {
                                         tempids.clear();
                                         break;
                                     }
-                                } else if (limit == "right" && (direction == -8 || direction == 8)) {
+                                } else if (limit.equals("right") && (direction == -8 || direction == 8)) {
                                     if (offset != 79 && offset != 135) {
                                         tempids.add(offset);
                                     } else {
@@ -190,7 +186,7 @@ public class GameLogic {
                                         tempids.clear();
                                         break;
                                     }
-                                } else if (limit == "bottom" && (direction == -1 || direction == 1)) {
+                                } else if (limit.equals("bottom") && (direction == -1 || direction == 1)) {
                                     if (offset != 128 && offset != 135) {
                                         tempids.add(offset);
                                     } else {
@@ -213,8 +209,8 @@ public class GameLogic {
 
                         } else if (circles[offset].getFill().toString().equals(playercolor)) {
 
-                            for (int k = 0; k < tempids.size(); k++) {
-                                board.getChangeids().add(tempids.get(k));
+                            for (Integer tempid : tempids) {
+                                board.getChangeids().add(tempid);
                             }
                             border = false;
                             break;
@@ -308,19 +304,10 @@ public class GameLogic {
         for (int i = 72; i < 136; i++) {
             if (circles[i].getFill().toString().equals(board.getHexcolorred())) {
                 score1++;
-                if (player1.getPlayercolor() == board.getHexcolorred()) {
-                    text1.setText(String.valueOf(score1));
-                } else {
-                    text2.setText(String.valueOf(score1));
-                }
+                text1.setText(String.valueOf(score1));
             } else if (circles[i].getFill().toString().equals(board.getHexcolorblack())) {
                 score2++;
-                if (player1.getPlayercolor() == board.getHexcolorblack()) {
-                    text1.setText(String.valueOf(score2));
-                } else {
-                    text2.setText(String.valueOf(score2));
-                }
-
+                text2.setText(String.valueOf(score2));
             }
         }
     }
