@@ -63,7 +63,7 @@
          <left>
             <VBox alignment="CENTER" prefHeight="900.0" BorderPane.alignment="CENTER">
                <children>
-                  <Label fx:id="player1name" contentDisplay="RIGHT" prefHeight="20.0" prefWidth="115.0" textAlignment="CENTER">
+                  <Label fx:id="leftname" contentDisplay="RIGHT" prefHeight="20.0" prefWidth="115.0" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>
@@ -74,7 +74,7 @@
                         <Insets left="10.0" />
                      </VBox.margin>
                   </Label>
-                  <Text fx:id="score1" strokeType="OUTSIDE" strokeWidth="0.0" text="0">
+                  <Text fx:id="leftscore" strokeType="OUTSIDE" strokeWidth="0.0" text="0">
                      <font>
                         <Font size="36.0" />
                      </font>
@@ -85,12 +85,12 @@
          <right>
             <VBox alignment="CENTER" prefHeight="900.0" BorderPane.alignment="CENTER">
                <children>
-                  <Label fx:id="player2name" alignment="CENTER" prefHeight="20.0" prefWidth="115.0" textAlignment="CENTER">
+                  <Label fx:id="rightname" alignment="CENTER" prefHeight="20.0" prefWidth="115.0" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>
                   </Label>
-                  <Text fx:id="score2" strokeType="OUTSIDE" strokeWidth="0.0" text="0" textAlignment="CENTER" wrappingWidth="99.13671875">
+                  <Text fx:id="rightscore" strokeType="OUTSIDE" strokeWidth="0.0" text="0" textAlignment="CENTER" wrappingWidth="99.13671875">
                      <font>
                         <Font size="36.0" />
                      </font>

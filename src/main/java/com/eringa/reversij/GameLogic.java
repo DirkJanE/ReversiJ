@@ -4,6 +4,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
@@ -35,27 +36,50 @@ public class GameLogic {
         }
     }
 
-    public static void setPlayerTurn(Player player1, Player player2, Text playerturn) {
+    public static void setPlayerTurn(Boolean firstrun, Player player1, Player player2, Text playerturn) {
+        if (firstrun) {
             if (player1.getPlayermove()) {
                 playerturn.setText("It's your turn, " + player1.getPlayername() + "!");
-                player1.setPlayermove(false);
             } else {
                 playerturn.setText("It's your turn, " + player2.getPlayername() + "!");
+            }
+        } else {
+            if (player1.getPlayermove()) {
+                playerturn.setText("It's your turn, " + player2.getPlayername() + "!");
+                player1.setPlayermove(false);
+            } else {
+                playerturn.setText("It's your turn, " + player1.getPlayername() + "!");
                 player1.setPlayermove(true);
             }
         }
+    }
 
     public static void coinFlip(Player player1, Player player2, Board board) {
 
         int num = (int)(Math.random() * 2) + 1;
+
         if (num == 1) {
             player1.setPlayermove(true);
+            player2.setPlayermove(false);
             player1.setPlayercolor(board.getHexcolorred());
+            player2.setPlayercolor(board.getHexcolorblack());
             player1.setPlayerposition("left");
+            player2.setPlayerposition("right");
+
         } else {
+            player1.setPlayermove(false);
             player2.setPlayermove(true);
+            player1.setPlayercolor(board.getHexcolorblack());
             player2.setPlayercolor(board.getHexcolorred());
+            player1.setPlayerposition("right");
             player2.setPlayerposition("left");
+
+        }
+    }
+
+    public static void getPossibleComputerMoves(Circle[] circles, Board board) {
+        for (int i = 72; i < 136; i++) {
+            //circles[i].getFill().equals(Color.valueOf(board.getHexcolorblue()));
         }
     }
 
@@ -297,18 +321,54 @@ public class GameLogic {
         board.getChangeids().clear();
     }
 
-    public static void updateScore(Circle[] circles, Text text1, Text text2, Board board, Player player1, Player player2) {
+    public static void updatePlayerScore(Circle[] circles, Board board, Player player1, Player player2) {
 
         int score1 = 0;
         int score2 = 0;
         for (int i = 72; i < 136; i++) {
             if (circles[i].getFill().toString().equals(board.getHexcolorred())) {
-                score1++;
-                text1.setText(String.valueOf(score1));
+
+                if (player1.getPlayercolor().equals(board.getHexcolorred())) {
+                    score1++;
+                    player1.setPlayerscore(score1);
+                } else if (player2.getPlayercolor().equals(board.getHexcolorred())) {
+                    score1++;
+                    player2.setPlayerscore(score1);
+                }
+
             } else if (circles[i].getFill().toString().equals(board.getHexcolorblack())) {
-                score2++;
-                text2.setText(String.valueOf(score2));
+
+                if (player1.getPlayercolor().equals(board.getHexcolorblack())) {
+                    score2++;
+                    player1.setPlayerscore(score2);
+                } else if (player2.getPlayercolor().equals(board.getHexcolorblack())) {
+                    score2++;
+                    player2.setPlayerscore(score2);
+
+                }
             }
+        }
+    }
+
+    public static void setBoardInfo(Player player1, Player player2, Label leftname, Label rightname, Text leftscore, Text rightscore) {
+        if (player1.getPlayerposition().equals("left")) {
+            leftname.setText(player1.getPlayername());
+            leftname.setTextFill(Paint.valueOf(player1.getPlayercolor()));
+            leftscore.setFill(Paint.valueOf(player1.getPlayercolor()));
+            leftscore.setText(String.valueOf(player1.getPlayerscore()));
+            rightname.setText(player2.getPlayername());
+            rightname.setTextFill(Paint.valueOf(player2.getPlayercolor()));
+            rightscore.setFill(Paint.valueOf(player2.getPlayercolor()));
+            rightscore.setText(String.valueOf(player2.getPlayerscore()));
+        } else if (player1.getPlayerposition().equals("right")) {
+            leftname.setText(player2.getPlayername());
+            leftname.setTextFill(Paint.valueOf(player2.getPlayercolor()));
+            leftscore.setText(String.valueOf(player2.getPlayerscore()));
+            leftscore.setFill(Paint.valueOf(player2.getPlayercolor()));
+            rightname.setText(player1.getPlayername());
+            rightname.setTextFill(Paint.valueOf(player1.getPlayercolor()));
+            rightscore.setText(String.valueOf(player1.getPlayerscore()));
+            rightscore.setFill(Paint.valueOf(player1.getPlayercolor()));
         }
     }
 }

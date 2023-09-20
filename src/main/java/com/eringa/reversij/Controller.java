@@ -21,9 +21,9 @@ public class Controller implements Initializable {
 
     @FXML public DialogPane dialog;
 
-    @FXML public Label player1name, player2name;
+    @FXML public Label leftname, rightname;
 
-    @FXML public Text score1, score2, playerturn, request;
+    @FXML public Text leftscore, rightscore, playerturn, request;
 
     @FXML public TextField playername;
 
@@ -36,48 +36,53 @@ public class Controller implements Initializable {
     Circle[] circles = new Circle[208];
 
     Player player1 = new Player(false, board.getHexcolorblack(), "Player 1", 0, "");
-    Player player2 = new Player(false, board.getHexcolorblack(), "Player 2", 0, "");
+    Player player2 = new Player(false, board.getHexcolorblack(), "Computer", 0, "");
+
+    Boolean computermove;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        getNames(dialog, request, playername, player1name, player2name, dialogbutton, player1, player2, playerturn);
+        //getNames(dialog, request, playername, player1name, player2name, dialogbutton, player1, player2, playerturn);
 
-        coinFlip(player1, player2, board);
+        dialog.setVisible(false);
 
-        setupBoard(player1name, player2name);
-
-        updateScore(circles, score1, score2, board, player1, player2);
+        setupBoard();
 
         resetbutton.setOnMouseClicked(e -> handleResetButtonClick());
-        resetbutton.setText("Start");
+
+        if (player2.getPlayername().equals("Computer")) {
+            computermove = true;
         }
+    }
 
     public void handleBoardClick(MouseEvent e) {
 
         sourcecircle = (Circle) e.getSource();
+
+
+        getPossibleComputerMoves(circles, board);
+
 
         checkLines(sourcecircle, circles, player1, player2, board);
 
         if (board.getChangeids().size() > 0) {
             updateBoard(circles, board, player1, player2);
 
-            setPlayerTurn(player1, player2, playerturn);
+            setPlayerTurn(false, player1, player2, playerturn);
 
-            updateScore(circles, score1, score2, board, player1, player2);
+            updatePlayerScore(circles, board, player1, player2);
+
+            setBoardInfo(player1, player2, leftname, rightname, leftscore, rightscore);
         }
     }
+
 
     public void handleResetButtonClick() {
-        if (resetbutton.getText().equals("Start")) {
-            setupBoard(player1name, player2name);
-
-        } else {
-            setPlayerTurn(player1, player2, playerturn);
-        }
+        setupBoard();
     }
 
-    public void setupBoard(Label player1name, Label player2name) {
+    public void setupBoard() {
 
         for (int count = 0; count < 208; count++) {
             Circle circle = new Circle();
@@ -104,13 +109,10 @@ public class Controller implements Initializable {
                 cell++;
             }
         }
-        if (player1.getPlayermove()) {
-            player1name.setText(player1.getPlayername());
-            player2name.setText(player2.getPlayername());
-        } else {
-            player2name.setText(player1.getPlayername());
-            player1name.setText(player2.getPlayername());
-        }
-        updateScore(circles, score1, score2, board, player1, player2);
+
+        coinFlip(player1, player2, board);
+        setPlayerTurn(true, player1, player2, playerturn);
+        updatePlayerScore(circles, board, player1, player2);
+        setBoardInfo(player1, player2, leftname, rightname, leftscore, rightscore);
     }
 }
