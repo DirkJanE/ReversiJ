@@ -10,6 +10,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import static com.eringa.reversij.GameLogic.*;
@@ -38,7 +39,7 @@ public class Controller implements Initializable {
     Player player1 = new Player(false, board.getHexcolorblack(), "Player 1", 0, "");
     Player player2 = new Player(false, board.getHexcolorblack(), "Computer", 0, "");
 
-    Boolean computermove;
+    Boolean computerplayer;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -51,29 +52,54 @@ public class Controller implements Initializable {
 
         resetbutton.setOnMouseClicked(e -> handleResetButtonClick());
 
-        if (player2.getPlayername().equals("Computer")) {
-            computermove = true;
-        }
+        computerplayer = player2.getPlayername().equals("Computer");
     }
 
     public void handleBoardClick(MouseEvent e) {
 
-        sourcecircle = (Circle) e.getSource();
+        String circleid;
 
+        int maxloops = 1;
+        int secondmaxloops = 1;
 
-        getPossibleComputerMoves(circles, board);
+        ArrayList<Object> possiblecomputermoves = new ArrayList<>();
 
+        if (computerplayer) {
+            maxloops = 2;
+        }
 
-        checkLines(sourcecircle, circles, player1, player2, board);
+        for (int count = 0; count < maxloops; count++) {
 
-        if (board.getChangeids().size() > 0) {
-            updateBoard(circles, board, player1, player2);
+            if (computerplayer && count == 1) {
+                getPossibleComputerMoves(circles, board, possiblecomputermoves);
+                secondmaxloops = possiblecomputermoves.size();
+            }
 
-            setPlayerTurn(false, player1, player2, playerturn);
+            for (int i = 0; i < secondmaxloops; i++) {
 
-            updatePlayerScore(circles, board, player1, player2);
+                if (i == 0) {
+                    sourcecircle = (Circle) e.getSource();
+                     circleid = sourcecircle.getId();
+                } else {
+                    circleid = String.valueOf(possiblecomputermoves.get(i));
+                }
 
-            setBoardInfo(player1, player2, leftname, rightname, leftscore, rightscore);
+                checkLines(circleid, circles, player1, player2, board);
+
+                if (board.getChangeids().size() > 0) {
+                    updateBoard(circles, board, player1, player2);
+
+                    setPlayerTurn(false, player1, player2, playerturn);
+
+                    updatePlayerScore(circles, board, player1, player2);
+
+                    setBoardInfo(player1, player2, leftname, rightname, leftscore, rightscore);
+
+                    if (i > 0) {
+                        break;
+                    }
+                }
+            }
         }
     }
 

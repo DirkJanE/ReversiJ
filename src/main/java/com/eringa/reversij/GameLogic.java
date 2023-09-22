@@ -11,10 +11,11 @@ import javafx.scene.text.Text;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class GameLogic {
 
-    public static void getNames(DialogPane dialog, Text request, TextField playername, Label player1name, Label player2name, Button dialogbutton, Player player1, Player player2, Text playerturn) {
+    public static void getNames(DialogPane dialog, Text request, TextField playername, Label player1name, Label player2name, Button dialogbutton, Player player1, Player player2) {
         dialog.setVisible(true);
         request.setText("Please enter your name, player 1:");
         player1name.setText("Score " + player1.getPlayername() + ":");
@@ -58,7 +59,7 @@ public class GameLogic {
 
         int num = (int)(Math.random() * 2) + 1;
 
-        if (num == 1) {
+        if (num == 1 || player2.getPlayername().equals("Computer")) {
             player1.setPlayermove(true);
             player2.setPlayermove(false);
             player1.setPlayercolor(board.getHexcolorred());
@@ -77,15 +78,20 @@ public class GameLogic {
         }
     }
 
-    public static void getPossibleComputerMoves(Circle[] circles, Board board) {
+    public static void getPossibleComputerMoves(Circle[] circles, Board board, ArrayList<Object> possiblecomputermoves) {
         for (int i = 72; i < 136; i++) {
-            //circles[i].getFill().equals(Color.valueOf(board.getHexcolorblue()));
+            if (circles[i].getFill().equals(Color.valueOf(board.getHexcolorblue()))) {
+                possiblecomputermoves.add(i);
+            }
+        }
+        try {
+            TimeUnit.SECONDS.sleep(1);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
     }
 
-    public static void checkLines(Circle sourcecircle, Circle[] circles, Player player1, Player player2, Board board) {
-
-        String circleid = sourcecircle.getId();
+    public static void checkLines(String circleid, Circle[] circles, Player player1, Player player2, Board board) {
 
         String playercolor, opponentcolor;
 
@@ -110,7 +116,7 @@ public class GameLogic {
         int direction;
         boolean border = false;
 
-        limitandoffsets = getOffsets(id, board, limitandoffsets);
+        getOffsets(id, board, limitandoffsets);
 
         limit = (String) limitandoffsets.get(0);
         offsets = (List<Integer>) limitandoffsets.get(1);
@@ -245,7 +251,7 @@ public class GameLogic {
         }
     }
 
-    public static List<Object> getOffsets(Integer id, Board board, List<Object> limitandoffsets) {
+    public static void getOffsets(Integer id, Board board, List<Object> limitandoffsets) {
 
         String limit;
         List<Integer> offsets;
@@ -298,7 +304,6 @@ public class GameLogic {
             limitandoffsets.add(limit);
             limitandoffsets.add(offsets);
         }
-        return limitandoffsets;
     }
 
     public static void updateBoard(Circle[] circles, Board board, Player player1, Player player2) {
